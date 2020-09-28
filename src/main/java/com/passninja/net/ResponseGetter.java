@@ -3,7 +3,7 @@ package com.passninja.net;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.passninja.Passninja;
-import com.passninja.exception.APIException;
+import com.passninja.exception.ApiException;
 import com.passninja.exception.AuthenticationException;
 import com.passninja.exception.InvalidRequestException;
 
@@ -19,9 +19,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static com.passninja.net.APIResource.CHARSET;
-import static com.passninja.net.APIResource.RequestMethod.DELETE;
-import static com.passninja.net.APIResource.RequestMethod.POST;
+import static com.passninja.net.ApiResource.CHARSET;
+import static com.passninja.net.ApiResource.RequestMethod.DELETE;
+import static com.passninja.net.ApiResource.RequestMethod.POST;
 
 public class ResponseGetter implements IResponseGetter {
 
@@ -41,24 +41,24 @@ public class ResponseGetter implements IResponseGetter {
 
     @Override
     public <T> PassninjaResponse<T> request(
-            APIResource.RequestMethod method,
+            ApiResource.RequestMethod method,
             String url,
             Map<String, Object> data,
             Map<String, Object> query,
             Class<T> clazz,
-            RequestOptions options) throws AuthenticationException, APIException, InvalidRequestException, IOException {
-        return _request(method, url, data, query, clazz, options);
+            RequestOptions options) throws AuthenticationException, ApiException, InvalidRequestException, IOException {
+        return requestInternal(method, url, data, query, clazz, options);
     }
 
     @Override
     public <T> PassninjaResponse<T> request(
-            APIResource.RequestMethod method,
+            ApiResource.RequestMethod method,
             String url,
             Map<String, Object> data,
             Class<T> clazz,
-            RequestOptions options) throws AuthenticationException, APIException, InvalidRequestException, IOException {
+            RequestOptions options) throws AuthenticationException, ApiException, InvalidRequestException, IOException {
 
-        return _request(method, url, data, Collections.emptyMap(), clazz, options);
+        return requestInternal(method, url, data, Collections.emptyMap(), clazz, options);
     }
 
     static Map<String, String> getHeaders(RequestOptions options) {
@@ -80,7 +80,8 @@ public class ResponseGetter implements IResponseGetter {
         return headers;
     }
 
-    private static java.net.HttpURLConnection createDefaultConnection(String url, RequestOptions options) throws IOException {
+    private static java.net.HttpURLConnection createDefaultConnection(String url, RequestOptions options)
+        throws IOException {
         URL passninjaUrl = new URL(url);
 
         HttpURLConnection conn = (HttpURLConnection) (options.getProxy() == null ? passninjaUrl.openConnection()
@@ -95,8 +96,8 @@ public class ResponseGetter implements IResponseGetter {
 
     private static java.net.HttpURLConnection createGetConnection(String url, String query, RequestOptions options)
           throws IOException {
-        String getURL = query.isEmpty() ? url : String.format("%s?%s", url, query);
-        java.net.HttpURLConnection conn = createDefaultConnection(getURL, options);
+        String getUrl = query.isEmpty() ? url : String.format("%s?%s", url, query);
+        java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
 
         conn.setRequestMethod("GET");
 
@@ -105,16 +106,16 @@ public class ResponseGetter implements IResponseGetter {
 
     private static java.net.HttpURLConnection createPostConnection(String url, String data, String query,
           RequestOptions options) throws IOException {
-        String getURL = query.isEmpty() ? url : String.format("%s?%s", url, query);
-        java.net.HttpURLConnection conn = createDefaultConnection(getURL, options);
+        String getUrl = query.isEmpty() ? url : String.format("%s?%s", url, query);
+        java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
 
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
         conn.setRequestProperty("Content-Type", String.format("application/x-www-form-urlencoded;charset=%s",
-              APIResource.CHARSET));
+              ApiResource.CHARSET));
 
         try (OutputStream output = conn.getOutputStream()) {
-            output.write(data.getBytes(APIResource.CHARSET));
+            output.write(data.getBytes(ApiResource.CHARSET));
         }
         return conn;
     }
@@ -203,7 +204,7 @@ public class ResponseGetter implements IResponseGetter {
     }
 
     private static <T> PassninjaResponse<T> handleConnectionResponse(HttpURLConnection conn, Class<T> clazz)
-          throws IOException, InvalidRequestException, APIException {
+          throws IOException, InvalidRequestException, ApiException {
         int responseCode = conn.getResponseCode();
 
         if (responseCode >= 200 && responseCode < 300) {
@@ -214,12 +215,13 @@ public class ResponseGetter implements IResponseGetter {
         } else if (responseCode == 422) {
             throw MAPPER.readValue(conn.getErrorStream(), InvalidRequestException.class);
         } else {
-            throw MAPPER.readValue(conn.getErrorStream(), APIException.class);
+            throw MAPPER.readValue(conn.getErrorStream(), ApiException.class);
         }
     }
 
-    private static <T> PassninjaResponse<T> makeUrlConnectionRequest(APIResource.RequestMethod method, Class<T> clazz,
-          String url, String data, String qs, RequestOptions options) throws APIException, InvalidRequestException, IOException {
+    private static <T> PassninjaResponse<T> makeUrlConnectionRequest(ApiResource.RequestMethod method, Class<T> clazz,
+          String url, String data, String qs, RequestOptions options) throws ApiException, InvalidRequestException,
+          IOException {
         java.net.HttpURLConnection conn = null;
         try {
             if (method == POST) {
@@ -240,8 +242,9 @@ public class ResponseGetter implements IResponseGetter {
         }
     }
 
-    private static <T> PassninjaResponse<T> _request(APIResource.RequestMethod method, String url, Map<String, Object> data,
-          Map<String, Object> query, Class<T> clazz, RequestOptions options) throws AuthenticationException, APIException,
+    private static <T> PassninjaResponse<T> requestInternal(ApiResource.RequestMethod method, String url,
+          Map<String, Object> data, Map<String, Object> query, Class<T> clazz, RequestOptions options)
+          throws AuthenticationException, ApiException,
           InvalidRequestException, IOException {
         if (options == null) {
             options = RequestOptions.getDefault();
@@ -249,8 +252,8 @@ public class ResponseGetter implements IResponseGetter {
 
         String apiKey = options.getApiKey();
         if (apiKey == null || apiKey.trim().length() == 0) {
-            throw new AuthenticationException("Missing API Key. Make sure 'Passninja.init(<ACCOUNT_ID>, <API_KEY>)' is called "
-                  + "with a key from your Dashboard.", null);
+            throw new AuthenticationException("Missing API Key. Make sure 'Passninja.init(<ACCOUNT_ID>, <API_KEY>)'"
+                + " is called with a key from your Dashboard.", null);
         }
 
         String passninjaUrl = String.format("%s%s", Passninja.API_BASE_URL, url);

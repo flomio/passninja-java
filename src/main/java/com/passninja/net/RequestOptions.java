@@ -36,15 +36,14 @@ public class RequestOptions {
     }
     
     public Proxy getProxy() {
-    	return proxy;
+        return proxy;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
-        }
-        else if (o instanceof RequestOptions) {
+        } else if (o instanceof RequestOptions) {
             RequestOptions that = (RequestOptions) o;
             
             if (!Objects.equals(this.accountId, that.getAccountId())) {
@@ -109,12 +108,12 @@ public class RequestOptions {
         }
         
         public Builder setProxy(Proxy proxy) {
-        	this.proxy = proxy;
-        	return this;
+            this.proxy = proxy;
+            return this;
         }
         
         public Proxy getProxy() {
-        	return this.proxy;
+            return this.proxy;
         }
 
         public RequestOptions build() {
