@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class Pass extends ApiResource {
 
-    public static final String RESOURCE = "pass";
+    public static final String RESOURCE = "passes";
 
     public static class CustomEnvelope {
 
@@ -110,22 +110,22 @@ public class Pass extends ApiResource {
         }
     }
 
-    public static PassninjaResponse<PassCollection> list() throws ApiException, IOException, AuthenticationException,
+    public static PassninjaResponse<PassCollection> get() throws ApiException, IOException, AuthenticationException,
         InvalidRequestException {
-        return list(null, null);
+        return get(null, null);
     }
 
-    public static PassninjaResponse<PassCollection> list(Map<String, Object> params) throws ApiException, IOException,
+    public static PassninjaResponse<PassCollection> get(Map<String, Object> params) throws ApiException, IOException,
         AuthenticationException, InvalidRequestException {
-        return list(params, null);
+        return get(params, null);
     }
 
-    public static PassninjaResponse<PassCollection> list(RequestOptions options) throws ApiException, IOException,
+    public static PassninjaResponse<PassCollection> get(RequestOptions options) throws ApiException, IOException,
         AuthenticationException, InvalidRequestException {
-        return list(null, options);
+        return get(null, options);
     }
 
-    public static PassninjaResponse<PassCollection> list(Map<String, Object> params, RequestOptions options)
+    public static PassninjaResponse<PassCollection> get(Map<String, Object> params, RequestOptions options)
         throws ApiException, IOException, AuthenticationException, InvalidRequestException {
         return request(RequestMethod.GET, RESOURCE, params, PassCollection.class, options);
     }

@@ -64,13 +64,12 @@ public class ResponseGetter implements IResponseGetter {
     static Map<String, String> getHeaders(RequestOptions options) {
         Map<String, String> headers = new HashMap<String, String>();
 
-        headers.put("Authorization", String.format("Basic %s", Base64.getEncoder().encodeToString(
-              (options.getApiKey() + ":").getBytes())));
+        headers.put("x-api-key", options.getApiKey());
         headers.put("User-Agent", String.format("PassninjaJava/%s JDK/%s", Passninja.VERSION,
               System.getProperty("java.version")));
 
         if (options.getAccountId() != null) {
-            headers.put("AccountId", options.getAccountId());
+            headers.put("x-account-id", options.getAccountId());
         }
 
         if (options.getIdempotencyKey() != null) {
