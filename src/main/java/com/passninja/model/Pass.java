@@ -2,86 +2,54 @@ package com.passninja.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.passninja.exception.ApiException;
 import com.passninja.exception.AuthenticationException;
 import com.passninja.exception.InvalidRequestException;
-import com.passninja.exception.ParsingException;
 import com.passninja.net.ApiResource;
 import com.passninja.net.PassninjaResponse;
 import com.passninja.net.RequestOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Pass extends ApiResource {
 
     public static final String RESOURCE = "passes";
 
-    public static class CustomEnvelope {
-
-        @JsonProperty private final String id;
-        @JsonProperty private final String url;
-        @JsonProperty private final String object;
-
-        @JsonCreator
-        public CustomEnvelope(
-                @JsonProperty("id") final String id,
-                @JsonProperty("url") final String url,
-                @JsonProperty("object") final String object) {
-            this.id = id;
-            this.url = url;
-            this.object = object;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public String getObject() {
-            return object;
-        }
-    }
-
-    @JsonProperty private final String id;
-    @JsonProperty private final String description;
-    @JsonProperty private final String object;
+    @JsonProperty private final String passType;
+    @JsonProperty private final Map<String, Object> pass;
+    @JsonProperty private final Map<String, Object> urls;
 
     @JsonCreator
     public Pass(
-            @JsonProperty("id") final String id,
-            @JsonProperty("description") final String description,
-            @JsonProperty("object") final String object) {
-        this.id = id;
-        this.description = description;
-        this.object = object;
+            @JsonProperty("passType") final String passType,
+            @JsonProperty("pass") final Map<String, Object> pass,
+            @JsonProperty("urls") final Map<String, Object> urls) {
+        this.passType = passType;
+        this.pass = pass;
+        this.urls = urls;
     }
 
-    public String getId() {
-        return id;
+    public String getPassType() {
+        return passType;
     }
 
-    public String getDescription() {
-        return description;
+    public Map<String, Object> getPass() {
+        return pass;
     }
 
-    public String getObject() {
-        return object;
+    public Map<String, Object> getUrls() {
+        return urls;
     }
 
     @Override
     public String toString() {
         return "Pass{"
-                + "id='" + id + '\''
-                + ", description='" + description + '\''
-                + ", object='" + object + '\''
+                + "passType='" + passType + '\''
+                + ", pass='" + pass + '\''
+                + ", urls='" + urls + '\''
                 + '}';
     }
 
@@ -92,11 +60,15 @@ public class Pass extends ApiResource {
         public RequestBuilder() {
         }
 
-        public RequestBuilder setDescription(String description) {
-            params.put("description", description);
+        public RequestBuilder setPassType(String passType) {
+            params.put("passType", passType);
             return this;
         }
 
+        public RequestBuilder setPass(Map<String, Object> pass) {
+            params.put("pass", pass);
+            return this;
+        }
 
 
         public PassninjaResponse<Pass> create() throws ApiException, IOException, AuthenticationException,

@@ -1,5 +1,6 @@
 package com.passninja.net;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.passninja.Passninja;
@@ -104,9 +105,9 @@ public class ResponseGetter implements IResponseGetter {
         return conn;
     }
 
-    private static java.net.HttpURLConnection createPostConnection(String url, String data, String query,
+    private static java.net.HttpURLConnection createPostConnection(String url, String data,
           RequestOptions options) throws IOException {
-        String getUrl = query.isEmpty() ? url : String.format("%s?%s", url, query);
+        String getUrl = url;
         java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
 
         conn.setDoOutput(true);
@@ -120,9 +121,9 @@ public class ResponseGetter implements IResponseGetter {
         return conn;
     }
 
-    private static java.net.HttpURLConnection createPutConnection(String url, String data, String query,
+    private static java.net.HttpURLConnection createPutConnection(String url, String data,
           RequestOptions options) throws IOException {
-        String getUrl = query.isEmpty() ? url : String.format("%s?%s", url, query);
+        String getUrl = url;
         java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
 
         conn.setDoOutput(true);
@@ -145,24 +146,12 @@ public class ResponseGetter implements IResponseGetter {
         return conn;
     }
 
-    static String createQuery(Map<String, Object> params) throws UnsupportedEncodingException {
+    private static String createQuery(Map<String, Object> params) throws JsonProcessingException {
         if (params == null) {
             return "";
         }
 
-        StringBuilder queryStringBuffer = new StringBuilder();
-        List<Parameter> flatParams = flattenParams(params);
-        Iterator<Parameter> it = flatParams.iterator();
-
-        while (it.hasNext()) {
-            if (queryStringBuffer.length() > 0) {
-                queryStringBuffer.append("&");
-            }
-            Parameter param = it.next();
-            queryStringBuffer.append(urlEncodePair(param.key, param.value.toString()));
-        }
-
-        return queryStringBuffer.toString();
+        return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(params);
     }
 
     private static String urlEncodePair(String key, String value) throws UnsupportedEncodingException {
@@ -236,14 +225,14 @@ public class ResponseGetter implements IResponseGetter {
     }
 
     private static <T> PassninjaResponse<T> makeUrlConnectionRequest(ApiResource.RequestMethod method, Class<T> clazz,
-          String url, String data, String qs, RequestOptions options) throws ApiException, InvalidRequestException,
+          String url, String data, RequestOptions options) throws ApiException, InvalidRequestException,
           IOException {
         java.net.HttpURLConnection conn = null;
         try {
             if (method == POST) {
-                conn = createPostConnection(url, data, qs, options);
+                conn = createPostConnection(url, data, options);
             } else if (method == PUT) {
-                conn = createPutConnection(url, data, qs, options);
+                conn = createPutConnection(url, data, options);
             } else if (method == DELETE) {
                 conn = createDeleteConnection(url, options);
             } else {
@@ -277,8 +266,7 @@ public class ResponseGetter implements IResponseGetter {
         String passninjaUrl = String.format("%s%s", Passninja.API_BASE_URL, url);
 
         String encodedData = createQuery(data);
-        String queryString = createQuery(query);
-        return makeUrlConnectionRequest(method, clazz, passninjaUrl, encodedData, queryString, options);
+        return makeUrlConnectionRequest(method, clazz, passninjaUrl, encodedData, options);
     }
 
 }
