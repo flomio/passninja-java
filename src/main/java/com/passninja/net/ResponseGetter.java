@@ -22,6 +22,7 @@ import java.util.*;
 import static com.passninja.net.ApiResource.CHARSET;
 import static com.passninja.net.ApiResource.RequestMethod.DELETE;
 import static com.passninja.net.ApiResource.RequestMethod.POST;
+import static com.passninja.net.ApiResource.RequestMethod.PUT;
 
 public class ResponseGetter implements IResponseGetter {
 
@@ -110,7 +111,23 @@ public class ResponseGetter implements IResponseGetter {
 
         conn.setDoOutput(true);
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", String.format("application/x-www-form-urlencoded;charset=%s",
+        conn.setRequestProperty("Content-Type", String.format("application/json;charset=%s",
+              ApiResource.CHARSET));
+
+        try (OutputStream output = conn.getOutputStream()) {
+            output.write(data.getBytes(ApiResource.CHARSET));
+        }
+        return conn;
+    }
+
+    private static java.net.HttpURLConnection createPutConnection(String url, String data, String query,
+          RequestOptions options) throws IOException {
+        String getUrl = query.isEmpty() ? url : String.format("%s?%s", url, query);
+        java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
+
+        conn.setDoOutput(true);
+        conn.setRequestMethod("PUT");
+        conn.setRequestProperty("Content-Type", String.format("application/json;charset=%s",
               ApiResource.CHARSET));
 
         try (OutputStream output = conn.getOutputStream()) {
@@ -225,6 +242,8 @@ public class ResponseGetter implements IResponseGetter {
         try {
             if (method == POST) {
                 conn = createPostConnection(url, data, qs, options);
+            } else if (method == PUT) {
+                conn = createPutConnection(url, data, qs, options);
             } else if (method == DELETE) {
                 conn = createDeleteConnection(url, options);
             } else {
@@ -250,7 +269,7 @@ public class ResponseGetter implements IResponseGetter {
         }
 
         String apiKey = options.getApiKey();
-        if (apiKey == null || apiKey.trim().length() == 0) {
+        if (apiKey == null || apiKey.trim().isEmpty()) {
             throw new AuthenticationException("Missing API Key. Make sure 'Passninja.init(<ACCOUNT_ID>, <API_KEY>)'"
                 + " is called with a key from your Dashboard.", null);
         }

@@ -15,13 +15,12 @@ public abstract class ApiResource {
     public static final String CHARSET = "UTF-8";
 
     public enum RequestMethod {
-        GET, POST, DELETE
+        GET, POST, PUT, DELETE
     }
 
     public static <T> PassninjaResponse<T> request(ApiResource.RequestMethod method,
           String url, Map<String, Object> params, Class<T> clazz,
-          RequestOptions options) throws AuthenticationException, ApiException,
-          InvalidRequestException, IOException {
+          RequestOptions options) throws AuthenticationException, ApiException, InvalidRequestException, IOException {
         return responseGetter.request(method, url, params, clazz, options);
     }
 
