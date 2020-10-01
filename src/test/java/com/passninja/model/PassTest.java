@@ -16,8 +16,7 @@ public class PassTest extends BaseTest {
 
     @Test
     public void createPass() throws Exception {
-        PassninjaResponse<Pass> response = new Pass.RequestBuilder()
-              .setPassType("Name.a").setPass(new HashMap<>()).create();
+        PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
 
         Pass pass = response.getResponseBody();
 

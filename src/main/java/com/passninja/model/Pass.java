@@ -82,6 +82,11 @@ public class Pass extends ApiResource {
         }
     }
 
+    public static PassninjaResponse<Pass> create(String passType, Map<String, Object> pass) throws ApiException,
+        IOException, AuthenticationException, InvalidRequestException {
+        return new RequestBuilder().setPassType(passType).setPass(pass).create();
+    }
+
     public static PassninjaResponse<PassCollection> get() throws ApiException, IOException, AuthenticationException,
         InvalidRequestException {
         return get(null, null);
