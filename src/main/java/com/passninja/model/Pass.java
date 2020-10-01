@@ -19,21 +19,28 @@ public class Pass extends ApiResource {
     public static final String RESOURCE = "passes";
 
     @JsonProperty private final String passType;
+    @JsonProperty private final String serialNumber;
     @JsonProperty private final Map<String, Object> pass;
     @JsonProperty private final Map<String, Object> urls;
 
     @JsonCreator
     public Pass(
             @JsonProperty("passType") final String passType,
+            @JsonProperty("serialNumber") final String serialNumber,
             @JsonProperty("pass") final Map<String, Object> pass,
             @JsonProperty("urls") final Map<String, Object> urls) {
         this.passType = passType;
+        this.serialNumber = serialNumber;
         this.pass = pass;
         this.urls = urls;
     }
 
     public String getPassType() {
         return passType;
+    }
+
+    public String getSerialNumber() {
+        return serialNumber;
     }
 
     public Map<String, Object> getPass() {
