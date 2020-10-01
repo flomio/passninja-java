@@ -74,10 +74,6 @@ public class ResponseGetter implements IResponseGetter {
             headers.put("x-account-id", options.getAccountId());
         }
 
-        if (options.getIdempotencyKey() != null) {
-            headers.put("Idempotency-Key", options.getIdempotencyKey());
-        }
-
         return headers;
     }
 

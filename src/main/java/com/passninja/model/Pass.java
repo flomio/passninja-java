@@ -55,6 +55,7 @@ public class Pass extends ApiResource {
     public String toString() {
         return "Pass{"
                 + "passType='" + passType + '\''
+                + ", serialNumber='" + serialNumber + '\''
                 + ", pass='" + pass + '\''
                 + ", urls='" + urls + '\''
                 + '}';

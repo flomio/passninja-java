@@ -7,19 +7,16 @@ import com.passninja.Passninja;
 
 public class RequestOptions {
     public static RequestOptions getDefault() {
-        return new RequestOptions(Passninja.accountId, Passninja.apiKey,
-              null, null);
+        return new RequestOptions(Passninja.accountId, Passninja.apiKey, null);
     }
 
     private final String accountId;
     private final String apiKey;
-    private final String idempotencyKey;
     private final Proxy proxy;
 
-    private RequestOptions(String accountId, String apiKey, String idempotencyKey, Proxy proxy) {
+    private RequestOptions(String accountId, String apiKey, Proxy proxy) {
         this.accountId = accountId;
         this.apiKey = apiKey;
-        this.idempotencyKey = idempotencyKey;
         this.proxy = proxy;
     }
 
@@ -31,10 +28,6 @@ public class RequestOptions {
         return apiKey;
     }
 
-    public String getIdempotencyKey() {
-        return idempotencyKey;
-    }
-    
     public Proxy getProxy() {
         return proxy;
     }
@@ -54,10 +47,6 @@ public class RequestOptions {
                 return false;
             }
     
-            if (!Objects.equals(this.idempotencyKey, that.getIdempotencyKey())) {
-                return false;
-            }       
-            
             return true;
         } else {
             return false;
@@ -66,13 +55,12 @@ public class RequestOptions {
     
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, apiKey, idempotencyKey);
+        return Objects.hash(accountId, apiKey);
     }    
 
     public static final class Builder {
         private String accountId;
         private String apiKey;
-        private String idempotencyKey;
         private Proxy proxy;
 
         public Builder() {
@@ -98,15 +86,6 @@ public class RequestOptions {
             return this;
         }
 
-        public Builder setIdempotencyKey(String idempotencyKey) {
-            this.idempotencyKey = idempotencyKey;
-            return this;
-        }
-
-        public String getIdempotencyKey() {
-            return this.idempotencyKey;
-        }
-        
         public Builder setProxy(Proxy proxy) {
             this.proxy = proxy;
             return this;
@@ -118,7 +97,7 @@ public class RequestOptions {
 
         public RequestOptions build() {
             return new RequestOptions(this.accountId, this.apiKey,
-                  this.idempotencyKey, this.proxy);
+                  this.proxy);
         }
     }
 
