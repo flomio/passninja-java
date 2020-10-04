@@ -54,18 +54,18 @@ compile 'com.github.javadev:passninja:1.0'
 
 # Usage
 
-## `Passninja`
+## `PassNinjaClient`
 
 Use this class to init a `Passninja` object. Make sure to
 pass your user credentials to make any authenticated requests.
 
 ```java
-import com.passninja.Passninja
+import com.passninja.Passninja;
 
-account_id = '**your-account-id**'
-api_key = '**your-api-key**'
+String accountId = "**your-account-id**";
+String apiKey = "**your-api-key**";
 
-Passninja.init(account_id, api_key)
+Passninja.init(accountId, apiKey);
 ```
 
 We've placed our demo user API credentials in this example. Replace it with your
@@ -118,7 +118,7 @@ PassninjaResponse<Pass> response = Pass.put("demo.coupon", /* passType */
 
 ```java
 PassninjaResponse<Pass> response = Pass.delete("demo.coupon", /* passType */
-    "97694bd7-3493-4b39-b805-20e3e5e4c770", /* serialNumber */);
+    "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
 System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
 ```
 
