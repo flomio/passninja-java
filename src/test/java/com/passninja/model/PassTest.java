@@ -71,8 +71,7 @@ public class PassTest extends BaseTest {
     @Test
     public void notValidKey() throws Exception {
         Passninja.init("", "");
-        try
-        {
+        try {
             Pass.create("Name.a", new HashMap<>());
             fail("AuthenticationException is expected");
         } catch (AuthenticationException expected) {
