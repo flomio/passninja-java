@@ -12,8 +12,8 @@ Use <a href="https://passninja.com/docs">passninja-java</a> as a Maven package.<
     <a href="https://github.com/flomio/passninja-java/issues">
         <img alt="Issues" src="https://img.shields.io/github/issues/flomio/passninja-java.svg" />
     </a>
-    <a href="https://www.java.com/package/@passninja/passninja-java">
-        <img alt="maven package" src="https://img.shields.io/maven/v/@passninja/passninja-java.svg?style=flat-square" />
+    <a href="http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.github.javadev%22%20AND%20a%3A%22passninja%22">
+        <img alt="maven package" src="https://img.shields.io/maven-central/v/com.github.javadev/passninja.svg?style=flat-square" />
     </a>
 </div>
 
