@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.passninja.exception.ApiException;
 import com.passninja.exception.AuthenticationException;
-import com.passninja.exception.InvalidRequestException;
 import com.passninja.net.ApiResource;
 import com.passninja.net.PassninjaResponse;
 import com.passninja.net.RequestOptions;
@@ -79,51 +78,36 @@ public class Pass extends ApiResource {
         }
 
 
-        public PassninjaResponse<Pass> create() throws ApiException, IOException, AuthenticationException,
-            InvalidRequestException {
+        public PassninjaResponse<Pass> create() throws ApiException, IOException, AuthenticationException {
             return create(null);
         }
 
         public PassninjaResponse<Pass> create(RequestOptions options) throws ApiException, IOException,
-            AuthenticationException, InvalidRequestException {
+            AuthenticationException {
             return request(RequestMethod.POST, RESOURCE, params, Pass.class, options);
         }
     }
 
     public static PassninjaResponse<Pass> create(String passType, Map<String, Object> pass) throws ApiException,
-        IOException, AuthenticationException, InvalidRequestException {
+        IOException, AuthenticationException {
         return new RequestBuilder().setPassType(passType).setPass(pass).create();
     }
 
-    public static PassninjaResponse<PassCollection> get() throws ApiException, IOException, AuthenticationException,
-        InvalidRequestException {
-        return get(null, null);
+    public static PassninjaResponse<Pass> get(String passType, String serialNumber) throws ApiException, IOException,
+        AuthenticationException {
+        return request(RequestMethod.GET, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
-    public static PassninjaResponse<PassCollection> get(Map<String, Object> params) throws ApiException, IOException,
-        AuthenticationException, InvalidRequestException {
-        return get(params, null);
+    public static PassninjaResponse<Pass> put(String passType, String serialNumber, Map<String, Object> pass)
+          throws ApiException, IOException, AuthenticationException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pass", pass);
+        return request(RequestMethod.PUT, RESOURCE + "/" + passType + "/" + serialNumber, params, Pass.class, null);
     }
 
-    public static PassninjaResponse<PassCollection> get(RequestOptions options) throws ApiException, IOException,
-        AuthenticationException, InvalidRequestException {
-        return get(null, options);
-    }
-
-    public static PassninjaResponse<PassCollection> get(Map<String, Object> params, RequestOptions options)
-        throws ApiException, IOException, AuthenticationException, InvalidRequestException {
-        return request(RequestMethod.GET, RESOURCE, params, PassCollection.class, options);
-    }
-
-    public static PassninjaResponse<Pass> delete(String id) throws ApiException, IOException,
-        AuthenticationException, InvalidRequestException {
-        return delete(id, null);
-    }
-
-    public static PassninjaResponse<Pass> delete(String id, RequestOptions options) throws ApiException,
-        IOException, AuthenticationException, InvalidRequestException {
-        return request(RequestMethod.DELETE, String.format("%s/%s", RESOURCE, id), null,
-            Pass.class, options);
+    public static PassninjaResponse<Pass> delete(String passType, String serialNumber) throws ApiException, IOException,
+          AuthenticationException {
+        return request(RequestMethod.DELETE, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
 }
