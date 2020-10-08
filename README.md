@@ -31,8 +31,6 @@ Use <a href="https://passninja.com/docs">passninja-java</a> as a Maven package.<
 
 # Installation
 
-Install via pip:
-
 Include the following in your `pom.xml` for Maven:
 
 ```xml
