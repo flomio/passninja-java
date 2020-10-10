@@ -22,4 +22,10 @@ public abstract class ApiResource {
           RequestOptions options) throws AuthenticationException, ApiException, IOException {
         return responseGetter.request(method, url, params, clazz, options);
     }
+
+    public static <T> PassninjaResponse<T> request(ApiResource.RequestMethod method,
+          String url, Map<String, Object> params, Map<String, Object> query, Class<T> clazz,
+          RequestOptions options) throws AuthenticationException, ApiException, IOException {
+        return responseGetter.request(method, url, params, query, clazz, options);
+    }
 }

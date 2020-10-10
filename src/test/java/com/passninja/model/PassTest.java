@@ -69,6 +69,16 @@ public class PassTest extends BaseTest {
     }
 
     @Test
+    public void deleteForcePass() throws Exception {
+        super.beforeClass();
+        PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
+        assertEquals(200, response.getResponseCode());
+        Pass.deleteForce("Name.a", response.getResponseBody().getSerialNumber());
+        PassninjaResponse<Pass> value = Pass.get("Name.a", response.getResponseBody().getSerialNumber());
+        assertEquals(response.getResponseBody().getSerialNumber(), value.getResponseBody().getSerialNumber());
+    }
+
+    @Test
     public void notValidKey() throws Exception {
         Passninja.init("", "");
         try {

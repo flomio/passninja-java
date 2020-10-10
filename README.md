@@ -120,6 +120,12 @@ PassninjaResponse<Pass> response = Pass.delete("demo.coupon", /* passType */
 System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
 ```
 
+```java
+PassninjaResponse<Pass> response = Pass.deleteForce("demo.coupon", /* passType */
+    "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
+System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
+```
+
 # Documentation
 
 - [PassNinja Docs](https://passninja.com/documentation)

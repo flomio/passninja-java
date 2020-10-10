@@ -9,14 +9,14 @@ import com.passninja.exception.AuthenticationException;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.passninja.net.ApiResource.RequestMethod.*;
 
@@ -35,6 +35,18 @@ public class ResponseGetter implements IResponseGetter {
             RequestOptions options) throws AuthenticationException, ApiException, IOException {
 
         return requestInternal(method, url, data, Collections.emptyMap(), clazz, options);
+    }
+
+    @Override
+    public <T> PassninjaResponse<T> request(
+            ApiResource.RequestMethod method,
+            String url,
+            Map<String, Object> data,
+            Map<String, Object> query,
+            Class<T> clazz,
+            RequestOptions options) throws AuthenticationException, ApiException, IOException {
+
+        return requestInternal(method, url, data, query, clazz, options);
     }
 
     static Map<String, String> getHeaders(RequestOptions options) {
@@ -106,6 +118,7 @@ public class ResponseGetter implements IResponseGetter {
 
     private static java.net.HttpURLConnection createDeleteConnection(String url, RequestOptions options)
           throws IOException {
+        System.out.println("delete url - " + url);
         java.net.HttpURLConnection conn = createDefaultConnection(url, options);
 
         conn.setRequestMethod("DELETE");
@@ -173,10 +186,25 @@ public class ResponseGetter implements IResponseGetter {
                 + " is called with a key from your Dashboard.", null);
         }
 
-        String passninjaUrl = String.format("%s%s", Passninja.API_BASE_URL, url);
+        String queryParams = Objects.isNull(query) ? "" : query.entrySet().stream()
+              .map(item -> urlEncodePair(item.getKey(),
+                    String.valueOf(item.getValue()))).collect(Collectors.joining());
+
+        String passninjaUrl = String.format("%s%s", Passninja.API_BASE_URL,
+              queryParams.isEmpty() ? url : url + "?" + queryParams);
 
         String encodedData = createQuery(data);
         return makeUrlConnectionRequest(method, clazz, passninjaUrl, encodedData, options);
     }
+
+    private static String urlEncodePair(String key, String value) {
+        try {
+            return String.format("%s=%s", URLEncoder.encode(key, ApiResource.CHARSET),
+                  URLEncoder.encode(value, ApiResource.CHARSET));
+        } catch (UnsupportedEncodingException e) {
+            return "";
+        }
+    }
+
 
 }

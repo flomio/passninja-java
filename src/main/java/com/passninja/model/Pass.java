@@ -110,4 +110,12 @@ public class Pass extends ApiResource {
         return request(RequestMethod.DELETE, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
+    public static PassninjaResponse<Pass> deleteForce(String passType, String serialNumber) throws ApiException,
+          IOException, AuthenticationException {
+        Map<String, Object> query = new HashMap<>();
+        query.put("force", "true");
+        return request(RequestMethod.DELETE, RESOURCE + "/" + passType + "/" + serialNumber, null,
+            query, Pass.class, null);
+    }
+
 }
