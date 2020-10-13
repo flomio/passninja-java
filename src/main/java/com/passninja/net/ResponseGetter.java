@@ -86,27 +86,21 @@ public class ResponseGetter implements IResponseGetter {
 
     private static java.net.HttpURLConnection createPostConnection(String url, String data,
           RequestOptions options) throws IOException {
-        String getUrl = url;
-        java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
-
-        conn.setDoOutput(true);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", String.format("application/json;charset=%s",
-              ApiResource.CHARSET));
-
-        try (OutputStream output = conn.getOutputStream()) {
-            output.write(data.getBytes(ApiResource.CHARSET));
-        }
-        return conn;
+        return getHttpUrlConnection(url, data, options, "POST");
     }
 
     private static java.net.HttpURLConnection createPutConnection(String url, String data,
           RequestOptions options) throws IOException {
+        return getHttpUrlConnection(url, data, options, "PUT");
+    }
+
+    private static HttpURLConnection getHttpUrlConnection(String url, String data, RequestOptions options, String post)
+          throws IOException {
         String getUrl = url;
-        java.net.HttpURLConnection conn = createDefaultConnection(getUrl, options);
+        HttpURLConnection conn = createDefaultConnection(getUrl, options);
 
         conn.setDoOutput(true);
-        conn.setRequestMethod("PUT");
+        conn.setRequestMethod(post);
         conn.setRequestProperty("Content-Type", String.format("application/json;charset=%s",
               ApiResource.CHARSET));
 
@@ -118,7 +112,6 @@ public class ResponseGetter implements IResponseGetter {
 
     private static java.net.HttpURLConnection createDeleteConnection(String url, RequestOptions options)
           throws IOException {
-        System.out.println("delete url - " + url);
         java.net.HttpURLConnection conn = createDefaultConnection(url, options);
 
         conn.setRequestMethod("DELETE");
@@ -205,6 +198,4 @@ public class ResponseGetter implements IResponseGetter {
             return "";
         }
     }
-
-
 }
