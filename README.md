@@ -38,7 +38,7 @@ Include the following in your `pom.xml` for Maven:
   <dependency>
     <groupId>com.github.javadev</groupId>
     <artifactId>passninja</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
   </dependency>
   ...
 </dependencies>
@@ -47,7 +47,7 @@ Include the following in your `pom.xml` for Maven:
 Gradle:
 
 ```groovy
-compile 'com.github.javadev:passninja:1.1'
+compile 'com.github.javadev:passninja:1.2'
 ```
 
 # Usage
