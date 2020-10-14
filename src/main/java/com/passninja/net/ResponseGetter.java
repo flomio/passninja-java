@@ -136,6 +136,10 @@ public class ResponseGetter implements IResponseGetter {
             T value = MAPPER.readValue(conn.getInputStream(), clazz);
 
             return new PassninjaResponse<T>(responseCode, value, headers);
+        } else if (responseCode == 403) {
+            Map<String, Object> error = new HashMap<>();
+            error.put("error", "Error 403 while requesting data.");
+            throw new ApiException(error);
         } else {
             throw MAPPER.readValue(conn.getErrorStream(), ApiException.class);
         }
