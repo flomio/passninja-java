@@ -72,7 +72,7 @@ through your PassNinja account and don't hesitate to contact
 [PassNinja](https://passninja.com) with our built in chat system if you'd like
 to subscribe and create your own custom pass type(s).
 
-For more information on how to use `passninja-python` once it loads, please refer to
+For more information on how to use `passninja-java` once it loads, please refer to
 the [PassNinja JS API reference](https://passninja.com/docs/js)
 
 ## `PassNinjaClientMethods`
