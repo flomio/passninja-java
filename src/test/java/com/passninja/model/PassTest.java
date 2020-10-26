@@ -3,17 +3,14 @@ package com.passninja.model;
 import com.passninja.Passninja;
 import com.passninja.exception.AuthenticationException;
 import com.passninja.net.PassninjaResponse;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class PassTest {
 
     @BeforeEach
@@ -23,8 +20,7 @@ public class PassTest {
 
 
     @Test
-    @DisplayName("Should create a new pass")
-    public void pass_is_created_successfully() throws Exception {
+    public void should_create_a_new_pass() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
         Pass pass = response.getResponseBody();
         assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
@@ -32,8 +28,7 @@ public class PassTest {
     }
 
     @Test
-    @DisplayName("Should retrieve a pass by serial number")
-    public void pass_can_be_retrieved_by_serial_number() throws Exception {
+    public void should_retrieve_a_pass_by_serial_number() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
 
         assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
@@ -43,8 +38,7 @@ public class PassTest {
     }
 
     @Test
-    @DisplayName("Should put new details into a pass")
-    public void putPass() throws Exception {
+    public void should_put_new_details_into_a_pass() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
 
         assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
@@ -64,8 +58,7 @@ public class PassTest {
     }
 
     @Test
-    @DisplayName("Should delete a pass")
-    public void deletePass() throws Exception {
+    public void should_delete_a_pass() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
         assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
         Pass responseBody = response.getResponseBody();
@@ -75,8 +68,7 @@ public class PassTest {
     }
 
     @Test
-    @DisplayName("Should force delete a pass")
-    public void deleteForcePass() throws Exception {
+    public void should_force_delete_a_pass() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
         assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
         Pass responseBody = response.getResponseBody();
@@ -86,8 +78,7 @@ public class PassTest {
     }
 
     @Test
-    @DisplayName("Should fail when supplied with invalid pass credentials")
-    public void notValidKey() {
+    public void should_fail_with_invalid_pass_credentials() {
         Passninja.init("", "");
         Assertions.assertThrows(AuthenticationException.class, () -> Pass.create("Name.a", new HashMap<>()));
     }
