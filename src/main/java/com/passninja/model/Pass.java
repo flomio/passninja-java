@@ -98,6 +98,18 @@ public class Pass extends ApiResource {
         return request(RequestMethod.GET, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
+    public static PassninjaResponse<Pass> find(String passType) throws ApiException, IOException,
+        AuthenticationException {
+        return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Pass.class, null);
+    }
+
+    public static PassninjaResponse<PassPayload> decrypt(String passType, String payload) throws ApiException, IOException,
+        AuthenticationException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("payload", payload);
+        return request(RequestMethod.POST, RESOURCE + "/" + passType + "/decrypt", params, PassPayload.class, null);
+    }
+
     public static PassninjaResponse<Pass> put(String passType, String serialNumber, Map<String, Object> pass)
           throws ApiException, IOException, AuthenticationException {
         Map<String, Object> params = new HashMap<>();
