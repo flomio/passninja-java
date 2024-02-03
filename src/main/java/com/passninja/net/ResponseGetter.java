@@ -145,13 +145,13 @@ public class ResponseGetter implements IResponseGetter {
         }
     }
 
-    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection conn, Class<T[]> clzs, boolean isA)
+    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection c, Class<T[]> clzs, boolean iA)
           throws IOException, ApiException {
-        int responseCode = conn.getResponseCode();
+        int responseCode = c.getResponseCode();
 
         if (responseCode >= 200 && responseCode < 300) {
-            Map<String, List<String>> headers = conn.getHeaderFields();
-            T value = MAPPER.readValue(conn.getInputStream(), clzs);
+            Map<String, List<String>> headers = c.getHeaderFields();
+            T value = MAPPER.readValue(c.getInputStream(), clzs);
 
             return new PassninjaResponse<T>(responseCode, value, headers);
         } else if (responseCode == 403) {
@@ -159,7 +159,7 @@ public class ResponseGetter implements IResponseGetter {
             error.put("error", "Error 403 while requesting data.");
             throw new ApiException(error);
         } else {
-            throw MAPPER.readValue(conn.getErrorStream(), ApiException.class);
+            throw MAPPER.readValue(c.getErrorStream(), ApiException.class);
         }
     }
 
