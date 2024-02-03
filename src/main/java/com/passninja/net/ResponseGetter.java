@@ -145,13 +145,13 @@ public class ResponseGetter implements IResponseGetter {
         }
     }
 
-    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection conn, Class<T[]> clazzArray, boolean isArray)
+    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection conn, Class<T[]> clzs, boolean isA)
           throws IOException, ApiException {
         int responseCode = conn.getResponseCode();
 
         if (responseCode >= 200 && responseCode < 300) {
             Map<String, List<String>> headers = conn.getHeaderFields();
-            T value = MAPPER.readValue(conn.getInputStream(), clazz);
+            T value = MAPPER.readValue(conn.getInputStream(), clzs);
 
             return new PassninjaResponse<T>(responseCode, value, headers);
         } else if (responseCode == 403) {
