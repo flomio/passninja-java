@@ -103,10 +103,10 @@ public class Pass extends ApiResource {
         return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Pass[].class, null);
     }
 
-    public static PassninjaResponse<PassPayload> decrypt(String passType, String payload) throws ApiException, IOException,
+    public static PassninjaResponse<PassPayload> decrypt(String passType, String apdu) throws ApiException, IOException,
         AuthenticationException {
         Map<String, String> params = new HashMap<>();
-        params.put("payload", payload);
+        params.put("payload", apdu);
         return request(RequestMethod.POST, RESOURCE + "/" + passType + "/decrypt", params, PassPayload.class, null);
     }
 
