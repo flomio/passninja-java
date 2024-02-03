@@ -145,7 +145,7 @@ public class ResponseGetter implements IResponseGetter {
         }
     }
 
-    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection conn, Class<T[]> clazzArray)
+    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection conn, Class<T[]> clazzArray, boolean isArray)
           throws IOException, ApiException {
         int responseCode = conn.getResponseCode();
 
