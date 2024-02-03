@@ -86,7 +86,7 @@ deleting passes via the PassNinja api. The methods are outlined below.
 Map<String, Object> pass = new HashMap<>();
 pass.put("discount", "50%");
 pass.put("memberName", "John");
-PassninjaResponse<Pass> response = Pass.create("demo.coupon", /* passType */
+PassninjaResponse<Pass> response = Pass.create("ptk_0x14", /* passType */
     pass /* passData */);
 
 System.out.println(response.getResponseBody().getUrls());
@@ -97,8 +97,25 @@ System.out.println(response.getResponseBody().getSerialNumber());
 ### Get
 
 ```java
-PassninjaResponse<Pass> response = Pass.get("demo.coupon", /* passType */
+PassninjaResponse<Pass> response = Pass.get("ptk_0x14", /* passType */
     "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
+```
+
+### Find
+
+Finds issued passes for a given pass template key
+
+```java
+PassninjaResponse<Pass> response = Pass.find("ptk_0x14");
+```
+
+### Decrypt
+
+Decrypts issued passes payload for a given pass template key
+
+```java
+PassninjaResponse<Pass> response = Pass.get("ptk_0x14", /* passType */
+    "55166a9700250a8c51382dd16822b0c763136090b91099c16385f2961b7d9392d31b386cae133dca1b2faf10e93a1f8f26343ef56c4b35d5bf6cb8cd9ff45177e1ea070f0d4fe88887" /* payload */);
 ```
 
 ### Update
@@ -107,7 +124,7 @@ PassninjaResponse<Pass> response = Pass.get("demo.coupon", /* passType */
 Map<String, Object> pass = new HashMap<>();
 pass.put("discount", "100%");
 pass.put("memberName", "Ted");
-PassninjaResponse<Pass> response = Pass.put("demo.coupon", /* passType */
+PassninjaResponse<Pass> response = Pass.put("ptk_0x14", /* passType */
     "97694bd7-3493-4b39-b805-20e3e5e4c770", /* serialNumber */
     pass /* passData */);
 ```
@@ -115,13 +132,13 @@ PassninjaResponse<Pass> response = Pass.put("demo.coupon", /* passType */
 ### Delete
 
 ```java
-PassninjaResponse<Pass> response = Pass.delete("demo.coupon", /* passType */
+PassninjaResponse<Pass> response = Pass.delete("ptk_0x14", /* passType */
     "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
 System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
 ```
 
 ```java
-PassninjaResponse<Pass> response = Pass.deleteForce("demo.coupon", /* passType */
+PassninjaResponse<Pass> response = Pass.deleteForce("ptk_0x14", /* passType */
     "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
 System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
 ```
