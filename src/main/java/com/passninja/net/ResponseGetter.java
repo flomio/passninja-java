@@ -145,24 +145,6 @@ public class ResponseGetter implements IResponseGetter {
         }
     }
 
-    private static <T> PassninjaResponse<T[]> handleConnectionResponse(HttpURLConnection c, Class<T[]> clzs, boolean iA)
-          throws IOException, ApiException {
-        int responseCode = c.getResponseCode();
-
-        if (responseCode >= 200 && responseCode < 300) {
-            Map<String, List<String>> headers = c.getHeaderFields();
-            T value = MAPPER.readValue(c.getInputStream(), clzs);
-
-            return new PassninjaResponse<T>(responseCode, value, headers);
-        } else if (responseCode == 403) {
-            Map<String, Object> error = new HashMap<>();
-            error.put("error", "Error 403 while requesting data.");
-            throw new ApiException(error);
-        } else {
-            throw MAPPER.readValue(c.getErrorStream(), ApiException.class);
-        }
-    }
-
     private static <T> PassninjaResponse<T> makeUrlConnectionRequest(ApiResource.RequestMethod method, Class<T> clazz,
           String url, String data, RequestOptions options) throws ApiException,
           IOException {
