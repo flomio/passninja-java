@@ -151,7 +151,7 @@ public class ResponseGetter implements IResponseGetter {
 
         if (responseCode >= 200 && responseCode < 300) {
             Map<String, List<String>> headers = conn.getHeaderFields();
-            T value = MAPPER.readValue(conn.getInputStream(), clazzArray);
+            T value = MAPPER.readValue(conn.getInputStream(), clazz);
 
             return new PassninjaResponse<T>(responseCode, value, headers);
         } else if (responseCode == 403) {
