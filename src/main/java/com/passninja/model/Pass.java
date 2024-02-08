@@ -98,9 +98,9 @@ public class Pass extends ApiResource {
         return request(RequestMethod.GET, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
-    public static PassninjaResponse<Pass> find(String passType) throws ApiException, IOException,
+    public static PassninjaResponse<Passes> find(String passType) throws ApiException, IOException,
         AuthenticationException {
-        return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Pass.class, null);
+        return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Passes.class, null);
     }
 
     public static PassninjaResponse<PassPayload> decrypt(String passType, String apdu) throws ApiException, IOException,
