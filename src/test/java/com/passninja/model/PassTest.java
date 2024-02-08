@@ -38,6 +38,28 @@ public class PassTest {
     }
 
     @Test
+    public void should_retrieve_passes() throws Exception {
+        PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
+
+        assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
+        Pass responseBody = response.getResponseBody();
+        PassninjaResponse<Pass[]> value = Pass.findPasses("Name.a");
+        assertThat(responseBody.getSerialNumber()).isEqualTo(value.getResponseBody()[0].getSerialNumber());
+    }
+
+    @Test
+    public void should_decrypt_pass() throws Exception {
+        PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
+
+        assertThat(response.getResponseCode()).as("check successful response").isEqualTo(200);
+        Pass responseBody = response.getResponseBody();
+        PassninjaResponse<Pass> value = Pass.decryptPass("Name.a",
+            "55166a9700250a8c51382dd16822b0c763136090b91099c16385f2961b7d9392d31b386cae"
+            + "133dca1b2faf10e93a1f8f26343ef56c4b35d5bf6cb8cd9ff45177e1ea070f0d4fe88887");
+        assertThat(responseBody.getSerialNumber()).isEqualTo(value.getResponseBody().getSerialNumber());
+    }
+
+    @Test
     public void should_put_new_details_into_a_pass() throws Exception {
         PassninjaResponse<Pass> response = Pass.create("Name.a", new HashMap<>());
 
