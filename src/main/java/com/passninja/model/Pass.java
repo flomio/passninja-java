@@ -17,6 +17,7 @@ public class Pass extends ApiResource {
 
     public static final String RESOURCE = "passes";
 
+    @JsonProperty private final String id;
     @JsonProperty private final String passType;
     @JsonProperty private final String serialNumber;
     @JsonProperty private final Map<String, Object> pass;
@@ -24,10 +25,12 @@ public class Pass extends ApiResource {
 
     @JsonCreator
     public Pass(
+            @JsonProperty("id") final String id,
             @JsonProperty("passType") final String passType,
             @JsonProperty("serialNumber") final String serialNumber,
             @JsonProperty("pass") final Map<String, Object> pass,
             @JsonProperty("urls") final Map<String, Object> urls) {
+        this.id = id;
         this.passType = passType;
         this.serialNumber = serialNumber;
         this.pass = pass;
@@ -98,16 +101,16 @@ public class Pass extends ApiResource {
         return request(RequestMethod.GET, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
     }
 
-    public static PassninjaResponse<Pass[]> findPasses(String passType) throws ApiException, IOException,
+    public static PassninjaResponse<Passes> find(String passType) throws ApiException, IOException,
         AuthenticationException {
-        return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Pass[].class, null);
+        return request(RequestMethod.GET, RESOURCE + "/" + passType, null, Passes.class, null);
     }
 
-    public static PassninjaResponse<Pass> decryptPass(String passType, String payload) throws ApiException, IOException,
+    public static PassninjaResponse<PassPayload> decrypt(String passType, String payload) throws ApiException, IOException,
         AuthenticationException {
-        Map<String, Object> data = new HashMap<>();
-        data.put("payload", payload);
-        return request(RequestMethod.GET, RESOURCE + "/" + passType, data, Pass.class, null);
+        Map<String, Object> params = new HashMap<>();
+        params.put("payload", payload);
+        return request(RequestMethod.POST, RESOURCE + "/" + passType + "/decrypt", params, PassPayload.class, null);
     }
 
     public static PassninjaResponse<Pass> put(String passType, String serialNumber, Map<String, Object> pass)
