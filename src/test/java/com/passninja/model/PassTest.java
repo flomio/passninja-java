@@ -55,7 +55,8 @@ public class PassTest {
         PassninjaResponse<Passes> value = Pass.find("ptk_0x2");
         assertThat(
                 value.getResponseBody().getPasses().stream()
-                        .anyMatch(item -> Objects.equals(item.getSerialNumber(), responseBody.getSerialNumber()))).isEqualTo(true);
+                        .anyMatch(item -> Objects.equals(item.getSerialNumber(),
+                                responseBody.getSerialNumber()))).isEqualTo(true);
     }
 
     @Test
