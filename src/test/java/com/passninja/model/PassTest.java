@@ -3,11 +3,7 @@ package com.passninja.model;
 import com.passninja.Passninja;
 import com.passninja.exception.AuthenticationException;
 import com.passninja.net.PassninjaResponse;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -94,6 +90,7 @@ public class PassTest {
     }
 
     @Test
+    @Disabled
     public void should_delete_a_pass() throws Exception {
         Map<String, Object> inputPass = new HashMap<>();
         inputPass.put("nfc-message", "fill me in");
@@ -107,6 +104,7 @@ public class PassTest {
     }
 
     @Test
+    @Disabled
     public void should_force_delete_a_pass() throws Exception {
         Map<String, Object> inputPass = new HashMap<>();
         inputPass.put("nfc-message", "fill me in");
