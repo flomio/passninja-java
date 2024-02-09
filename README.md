@@ -38,7 +38,7 @@ Include the following in your `pom.xml` for Maven:
   <dependency>
     <groupId>com.github.javadev</groupId>
     <artifactId>passninja</artifactId>
-    <version>1.2</version>
+    <version>1.3</version>
   </dependency>
   ...
 </dependencies>
