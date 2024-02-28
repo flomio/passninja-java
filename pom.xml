@@ -3,7 +3,7 @@
     <groupId>com.github.javadev</groupId>
     <artifactId>passninja</artifactId>
     <packaging>jar</packaging>
-    <version>1.3</version>
+    <version>1.4</version>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The mobile wallet NFC pass service Passninja</description>
     <url>https://github.com/flomio/passninja-java</url>

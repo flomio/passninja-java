@@ -38,7 +38,7 @@ Include the following in your `pom.xml` for Maven:
   <dependency>
     <groupId>com.github.javadev</groupId>
     <artifactId>passninja</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
   </dependency>
   ...
 </dependencies>
@@ -47,7 +47,7 @@ Include the following in your `pom.xml` for Maven:
 Gradle:
 
 ```groovy
-compile 'com.github.javadev:passninja:1.2'
+compile 'com.github.javadev:passninja:1.4'
 ```
 
 # Usage
@@ -124,6 +124,14 @@ System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().g
 PassninjaResponse<Pass> response = Pass.deleteForce("demo.coupon", /* passType */
     "97694bd7-3493-4b39-b805-20e3e5e4c770" /* serialNumber */);
 System.out.println("Pass deleted. Serial_number: ", response.getResponseBody().getSerialNumber());
+```
+
+
+### PassTemplate
+
+```java
+PassninjaResponse<PassTemplate> response = PassTemplate.find("ptk_0x2" /* passTemplateId */);
+System.out.println("PassTemplate name: ", response.getResponseBody().getName());
 ```
 
 # Documentation
