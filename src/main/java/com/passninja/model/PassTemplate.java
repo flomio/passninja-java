@@ -29,7 +29,7 @@ public class PassTemplate extends ApiResource {
     public PassTemplate(
             @JsonProperty("id") final String id,
             @JsonProperty("name") final String name,
-            @JsonProperty("passTypeId") final String passTypeId,
+            @JsonProperty("pass_type_id") final String passTypeId,
             @JsonProperty("platform") final String platform,
             @JsonProperty("style") final String style,
             @JsonProperty("issued_pass_count") final Integer issuedPassCount,
