@@ -121,6 +121,19 @@ public class Pass extends ApiResource {
         return request(RequestMethod.PUT, RESOURCE + "/" + passType + "/" + serialNumber, params, Pass.class, null);
     }
 
+    // Partial update: only the provided fields change (PUT is a full replace that
+    // requires all required fields). HttpURLConnection cannot issue PATCH, so this
+    // sends a POST with the server's `_method=PATCH` override (POST-only).
+    public static PassninjaResponse<Pass> patch(String passType, String serialNumber, Map<String, Object> pass)
+          throws ApiException, IOException, AuthenticationException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pass", pass);
+        Map<String, Object> query = new HashMap<>();
+        query.put("_method", "PATCH");
+        return request(RequestMethod.POST, RESOURCE + "/" + passType + "/" + serialNumber, params,
+            query, Pass.class, null);
+    }
+
     public static PassninjaResponse<Pass> delete(String passType, String serialNumber) throws ApiException, IOException,
           AuthenticationException {
         return request(RequestMethod.DELETE, RESOURCE + "/" + passType + "/" + serialNumber, null, Pass.class, null);
