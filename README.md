@@ -90,7 +90,7 @@ PassninjaResponse<Pass> response = Pass.create("demo.coupon", /* passType */
     pass /* passData */);
 
 System.out.println(response.getResponseBody().getUrls());
-System.out.println(response.getResponseBody().getPassType());
+System.out.println(response.getResponseBody().getPassTemplate());
 System.out.println(response.getResponseBody().getSerialNumber());
 ```
 
