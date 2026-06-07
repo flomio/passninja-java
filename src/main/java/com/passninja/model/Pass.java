@@ -18,7 +18,7 @@ public class Pass extends ApiResource {
     public static final String RESOURCE = "passes";
 
     @JsonProperty private final String id;
-    @JsonProperty private final String passType;
+    @JsonProperty private final String passTemplate;
     @JsonProperty private final String serialNumber;
     @JsonProperty private final Map<String, Object> pass;
     @JsonProperty private final Map<String, Object> urls;
@@ -26,19 +26,19 @@ public class Pass extends ApiResource {
     @JsonCreator
     public Pass(
             @JsonProperty("id") final String id,
-            @JsonProperty("passType") final String passType,
+            @JsonProperty("passTemplate") final String passTemplate,
             @JsonProperty("serialNumber") final String serialNumber,
             @JsonProperty("pass") final Map<String, Object> pass,
             @JsonProperty("urls") final Map<String, Object> urls) {
         this.id = id;
-        this.passType = passType;
+        this.passTemplate = passTemplate;
         this.serialNumber = serialNumber;
         this.pass = pass;
         this.urls = urls;
     }
 
-    public String getPassType() {
-        return passType;
+    public String getPassTemplate() {
+        return passTemplate;
     }
 
     public String getSerialNumber() {
@@ -56,7 +56,7 @@ public class Pass extends ApiResource {
     @Override
     public String toString() {
         return "Pass{"
-                + "passType='" + passType + '\''
+                + "passTemplate='" + passTemplate + '\''
                 + ", serialNumber='" + serialNumber + '\''
                 + ", pass='" + pass + '\''
                 + ", urls='" + urls + '\''
@@ -71,7 +71,7 @@ public class Pass extends ApiResource {
         }
 
         public RequestBuilder setPassType(String passType) {
-            params.put("passType", passType);
+            params.put("passTemplate", passType);
             return this;
         }
 
@@ -119,6 +119,19 @@ public class Pass extends ApiResource {
         Map<String, Object> params = new HashMap<>();
         params.put("pass", pass);
         return request(RequestMethod.PUT, RESOURCE + "/" + passType + "/" + serialNumber, params, Pass.class, null);
+    }
+
+    // Partial update: only the provided fields change (PUT is a full replace that
+    // requires all required fields). HttpURLConnection cannot issue PATCH, so this
+    // sends a POST with the server's `_method=PATCH` override (POST-only).
+    public static PassninjaResponse<Pass> patch(String passType, String serialNumber, Map<String, Object> pass)
+          throws ApiException, IOException, AuthenticationException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("pass", pass);
+        Map<String, Object> query = new HashMap<>();
+        query.put("_method", "PATCH");
+        return request(RequestMethod.POST, RESOURCE + "/" + passType + "/" + serialNumber, params,
+            query, Pass.class, null);
     }
 
     public static PassninjaResponse<Pass> delete(String passType, String serialNumber) throws ApiException, IOException,

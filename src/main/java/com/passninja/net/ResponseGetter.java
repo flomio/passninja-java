@@ -187,7 +187,9 @@ public class ResponseGetter implements IResponseGetter {
               .map(item -> urlEncodePair(item.getKey(),
                     String.valueOf(item.getValue()))).collect(Collectors.joining());
 
-        String passninjaUrl = String.format("%s%s", Passninja.API_BASE_URL,
+        String apiBase = System.getProperty("passninja.apiBaseUrl",
+              Passninja.API_BASE_URL);
+        String passninjaUrl = String.format("%s%s", apiBase,
               queryParams.isEmpty() ? url : url + "?" + queryParams);
 
         String encodedData = createQuery(data);
