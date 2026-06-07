@@ -1,7 +1,9 @@
 package com.passninja.model;
 
+import com.passninja.MockApiServer;
 import com.passninja.Passninja;
 import com.passninja.net.PassninjaResponse;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -12,9 +14,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class PassTemplateTest {
 
+    private MockApiServer mock;
+
     @BeforeEach
-    void setup() {
+    void setup() throws Exception {
+        mock = new MockApiServer();
+        System.setProperty("passninja.apiBaseUrl", mock.start());
         Passninja.init("aid_0x2", "d5247644c316194d9089e23766e08ea9");
+    }
+
+    @AfterEach
+    void teardown() {
+        mock.stop();
+        System.clearProperty("passninja.apiBaseUrl");
     }
 
     @Test

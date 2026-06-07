@@ -1,5 +1,6 @@
 package com.passninja.model;
 
+import com.passninja.MockApiServer;
 import com.passninja.Passninja;
 import com.passninja.exception.AuthenticationException;
 import com.passninja.net.PassninjaResponse;
@@ -14,9 +15,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 public class PassTest {
 
+    private MockApiServer mock;
+
     @BeforeEach
-    void setup() {
+    void setup() throws Exception {
+        mock = new MockApiServer();
+        System.setProperty("passninja.apiBaseUrl", mock.start());
         Passninja.init("aid_0x2", "d5247644c316194d9089e23766e08ea9");
+    }
+
+    @AfterEach
+    void teardown() {
+        mock.stop();
+        System.clearProperty("passninja.apiBaseUrl");
     }
 
     @Test
